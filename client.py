@@ -1,6 +1,6 @@
-global fonts, connection
+global fonts, connection, root
 import tkinter as tk
-import socket
+import socket, time
 
 servers = [['DAVID-JUCKES', 5000, 'For testing']]
 server = None
@@ -11,26 +11,37 @@ for x in range(len(servers)):
     s = servers[x]
     try:
         connection.connect((s[0], s[1]))
+        connection.send(b'clist_text')
+        time.sleep(0.5)
+        servers[x][2] += ' - ' + connection.recv(1024).decode()
+        connection.close()
     except ConnectionRefusedError:
         servers[x][2] += ' (offline)'
 
 class fonts:
     normal = ('', 12)
 
-def pick_server(serverlist):
+def pick_server(serverlist, selectorframe):
     try:
         choice = serverlist.curselection()[0]
+        if serverlist.get(choice).endswith(' (offline)'):
+            raise IndexError
     except IndexError:
-        print('IE')
-    finally:
+        pass
+    else:
         print(choice)
+        selectorframe.destroy()
+        frame = tk.Frame(root)
+        msg_output = tk.Listbox(frame, height=30, width=150)
+        msg_output.pack(fill=tk.BOTH, side=tk.TOP)
+        frame.pack(fill=tk.BOTH)
 
 root = tk.Tk()
 root.title('Better Messaging')
 
 selectorframe = tk.Frame(root)
 serverlist = tk.Listbox(selectorframe, height=len(servers) + 5, width=70, font=fonts.normal)
-chooseserver = tk.Button(selectorframe, text='Connect', font=fonts.normal, command=lambda: pick_server(serverlist))
+chooseserver = tk.Button(selectorframe, text='Connect', font=fonts.normal, command=lambda: pick_server(serverlist, selectorframe))
 
 for item in servers:
     serverlist.insert(tk.END, item[0] + ' - ' + item[2])
