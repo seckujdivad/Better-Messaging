@@ -32,9 +32,13 @@ def pick_server(serverlist, selectorframe):
         print(choice)
         selectorframe.destroy()
         frame = tk.Frame(root)
-        msg_output = tk.Listbox(frame, height=30, width=150)
-        msg_output.pack(fill=tk.BOTH, side=tk.TOP)
+        scrollbar = tk.Scrollbar(frame)
+        msg_output = tk.Listbox(frame, height=30, width=150, yscrollcommand=scrollbar.set)
+        msg_output.pack(fill=tk.BOTH, side=tk.LEFT)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         frame.pack(fill=tk.BOTH)
+        for t in range(100):
+            msg_output.insert(tk.END, t)
 
 root = tk.Tk()
 root.title('Better Messaging')
