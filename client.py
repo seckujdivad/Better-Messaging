@@ -36,6 +36,7 @@ def pick_server(serverlist, selectorframe):
         msg_output = tk.Listbox(frame, height=30, width=150, yscrollcommand=scrollbar.set)
         msg_output.pack(fill=tk.BOTH, side=tk.LEFT)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        scrollbar.config(command=msg_output.yview)
         frame.pack(fill=tk.BOTH)
         for t in range(100):
             msg_output.insert(tk.END, t)
