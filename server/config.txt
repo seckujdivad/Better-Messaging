@@ -1,0 +1,2 @@
+nospoof:1
+clist:Is it the legend27?

@@ -1,0 +1,16 @@
+Structure
+<type><id><arg>
+ 0     03  Hey!
+003Hey!
+
+Basic client (type 0):
+00: Request connection list text
+01: New room
+02: See rooms
+03: Get room history
+
+Basic server (type 1):
+00: New message
+
+Exceptions (type 2):
+00: Room already exists
