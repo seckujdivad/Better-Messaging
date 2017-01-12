@@ -9,6 +9,7 @@ Basic client (type 0):
 02: Enter board
 03: Create board
 04: Get board contents
+05: New message
 
 Basic server (type 1):
 00: Board contents start

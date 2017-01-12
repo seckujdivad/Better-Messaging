@@ -1,5 +1,5 @@
 global sdata
-import os, socket, threading
+import os, socket, threading, time
 #os.system('color a') #For that computery look - if you want it, uncomment it
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,6 +41,7 @@ def multi(server):
         while True:
             data = client.recv(1024).decode()
             if data == None or data == '':
+                time.sleep(0.05)
                 continue
             print(data)
             cmd = data[:3]
@@ -60,6 +61,7 @@ def multi(server):
             elif cmd == '002' and not arg == None: #Set board
                 if os.path.isdir('server/chats/' + arg):
                     board = arg
+                    print('board is', board)
                 else:
                     client.send(b'201')
             elif cmd == '003' and not arg == None: #Make new board
@@ -78,16 +80,18 @@ def multi(server):
                     file.close()
             elif cmd == '004' and not board == None and os.path.isdir('server/chats/' + arg):
                 file = open('server/chats/' + board + '/history.txt', 'r')
-                fc = file.readlines()
+                fc = file.read()
                 file.close()
                 client.send(b'100')
-                for line in fc:
+                for line in fc.split('\n'):
                     client.send(bytes('103' + line, 'UTF-8'))
-                client.send(b'104')
+                    print(line)
+                print(board, 'sent')
             elif cmd == '005' and not board == None and not arg == None:
                 file = open('server/chats/' + board + '/history.txt', 'a')
                 file.write('\n' + arg)
                 file.close()
+                print(arg, 'added to', board)
     while True:
         client, address = server.accept()
         sdata.clients.append(address)
