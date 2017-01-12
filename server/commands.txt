@@ -5,12 +5,17 @@ Structure
 
 Basic client (type 0):
 00: Request connection list text
-01: New room
-02: See rooms
-03: Get room history
+01: Get boards
+02: Enter board
+03: Create board
+04: Get board contents
 
 Basic server (type 1):
-00: New message
+00: Board contents start
+01: Board list
+03: Board contents line
+04: End of board contents
 
 Exceptions (type 2):
 00: Room already exists
+01: Room doesn't exist
